@@ -1,6 +1,7 @@
-name: Build APK
+name: Build Android APK
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -13,16 +14,20 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - name: Checkout repository
+
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: 17
 
-      - name: Grant execute permission
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew || true
 
       - name: Build Debug APK
@@ -32,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: medical-qr-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
