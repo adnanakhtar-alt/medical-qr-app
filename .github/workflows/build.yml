@@ -9,6 +9,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -16,13 +19,13 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '17'
 
-      - name: Make gradlew executable
+      - name: Grant execute permission
         run: chmod +x gradlew || true
 
-      - name: Build APK
+      - name: Build Debug APK
         run: ./gradlew assembleDebug
 
       - name: Upload APK
